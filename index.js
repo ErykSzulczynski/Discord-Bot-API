@@ -68,4 +68,32 @@ app.get('/auth/logout', (req, res) => {
     res.send('Session ended')
 })
 
+app.get('/events', (req, res) => {
+    connection.query('SELECT * FROM events', function (err, rows, fields) {
+        if (err) throw err
+      
+        res.status(200).send(rows)
+    }) 
+})
+
+app.post('/events', (req, res) => {
+    if (req.session.loggedIn){
+      const event = {
+        name: req.body.name,
+        date: req.body.date,
+        date_created: "2021-03-20",
+        users: req.body.users,
+        roles: req.body.roles,
+        created_by: 1
+      }
+      
+      connection.query('INSERT INTO events (name, date, date_created, users, roles, created_by) VALUES(?, ?, ?, ?, ?, ?)', [event.name, event.date, event.date_created, event.users, event.roles, event.created_by], function (err, result) {
+        if (err) throw err;
+        res.status(200).send("Event added");
+      });
+    } else {
+      res.status(401).send("User unauthorized");
+    }
+})
+
 app.listen(process.env.API_PORT, () => {console.log("API started on port: " + process.env.API_PORT)})
