@@ -41,25 +41,27 @@ app.post('/auth/register', async (req, res) => {
 })
 
 app.post('/auth/login', async (req, res) => {
-    const username = req.body.username;
-	const password = req.body.password;
+    const username = req.body.username
+	const password = req.body.password
 
 	if (username && password) {
 		  connection.query('SELECT * FROM users WHERE username = ?', [username], async function(error, results, fields) {
 			if (results.length > 0) {
                 if(await bcrypt.compare(password, results[0].password)) {
-                  req.session.loggedIn = true;
-                  res.send('Logged in');
+                  req.session.loggedIn = true
+                  res.send('Logged in')
+                  req.session.userId = results[0].id
+                  console.log(req.session.userId)
                   } else {
                     res.send('Not Allowed')
                   }
 			} else {
-				res.send('Incorrect Username and/or Password!');
+				res.send('Incorrect Username and/or Password!')
 			}			
 		});
 	} else {
-		res.status(500).send('Please enter Username and Password!');
-		res.end();
+		res.status(500).send('Please enter Username and Password!')
+		res.end()
 	}
 })
 
@@ -77,14 +79,19 @@ app.get('/events', (req, res) => {
 })
 
 app.post('/events', (req, res) => {
+    let date = new Date()
+    date = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate()
+
+    console.log(req.session.userId)
+
     if (req.session.loggedIn){
       const event = {
         name: req.body.name,
         date: req.body.date,
-        date_created: "2021-03-20",
+        date_created: date,
         users: req.body.users,
         roles: req.body.roles,
-        created_by: 1
+        created_by: req.session.userId
       }
       
       connection.query('INSERT INTO events (name, date, date_created, users, roles, created_by) VALUES(?, ?, ?, ?, ?, ?)', [event.name, event.date, event.date_created, event.users, event.roles, event.created_by], function (err, result) {
