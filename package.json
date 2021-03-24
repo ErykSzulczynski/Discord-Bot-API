@@ -1,0 +1,28 @@
+{
+  "name": "discord-bot-api",
+  "version": "1.0.0",
+  "description": "API for discord bot to collect events data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ErykSzulczynski/Discord-Bot-API.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ErykSzulczynski/Discord-Bot-API/issues"
+  },
+  "homepage": "https://github.com/ErykSzulczynski/Discord-Bot-API#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
