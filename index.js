@@ -1,11 +1,20 @@
 const express = require('express')
 const session = require('express-session')
 
-require('dotenv').config();
-
 const app = express()
 const bcrypt = require('bcrypt')
 const mysql = require('mysql')
+
+require('dotenv').config()
+
+app.use(express.json())
+
+app.use(session({
+    secret: process.env.APP_SECRET,
+    name: 'Auth session',
+    saveUninitialized: false,
+    resave: true
+}))
 
 const connection = mysql.createConnection({
     host: process.env.DB_HOST,
