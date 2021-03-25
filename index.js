@@ -49,9 +49,8 @@ app.post('/auth/login', async (req, res) => {
 			if (results.length > 0) {
                 if(await bcrypt.compare(password, results[0].password)) {
                   req.session.loggedIn = true
-                  res.send('Logged in')
                   req.session.userId = results[0].id
-                  console.log(req.session.userId)
+                  res.send('Logged in')
                   } else {
                     res.send('Not Allowed')
                   }
@@ -81,8 +80,6 @@ app.get('/events', (req, res) => {
 app.post('/events', (req, res) => {
     let date = new Date()
     date = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate()
-
-    console.log(req.session.userId)
 
     if (req.session.loggedIn){
       const event = {
